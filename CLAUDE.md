@@ -63,4 +63,18 @@ That diffability is the point: git-track the repo and commit after each sync, so
 node src/sync-claude-docs.ts && git add -A docs && git commit -m "sync $(date -I)" || echo "no changes"
 ```
 
-Weekly is the right cadence for scheduling (cron / GitHub Action); daily mostly produces empty commits.
+Weekly is the right cadence; daily mostly produces empty commits.
+
+## Automated sync
+
+`.github/workflows/sync-docs.yml` runs the sync every **Sunday at 23:59 UTC** and pushes the result as a `github-actions[bot]` commit. `workflow_dispatch` triggers it manually, with a `force` input mapping to `DOCS_FORCE=1`.
+
+Three behaviours worth preserving when editing it:
+
+- **It commits on partial failure, then fails the job.** Losing 189 good pages because 2 timed out is worse than a slightly stale mirror, so the commit step is `if: always()` and a later step re-raises the script's exit code.
+- **The change guard uses `git status`, not `git diff`.** `git diff` does not see untracked files, so a brand-new doc page would be silently skipped.
+- **A manifest-only change does not produce a commit.** `docs/.sync-manifest.json` rewrites its `syncedAt` on every run, so the guard excludes it via `':(exclude)docs/.sync-manifest.json'` — otherwise every week commits regardless of whether the docs moved.
+
+Cron in GitHub Actions is always UTC and cannot be given a timezone, so during BST the run lands at 00:59 Monday UK time. Scheduled runs are also queued rather than exact, and GitHub disables schedules on a repo after 60 days without activity.
+
+Note that the script counts a *restored* page (deleted locally, re-fetched with identical content) as `unchanged`, so a commit can carry a `0 added · 0 updated · 0 removed` body while still changing files.

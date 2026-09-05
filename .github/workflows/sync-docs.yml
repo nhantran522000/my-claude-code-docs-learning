@@ -1,0 +1,84 @@
+name: Sync docs
+
+on:
+  schedule:
+    # 23:59 every Sunday. GitHub cron is always UTC — see README note on BST.
+    - cron: "59 23 * * 0"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Ignore the manifest and re-fetch every page"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+# Never let two syncs race for the same push.
+concurrency:
+  group: sync-docs
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Needs >= 22.18 for native TS type stripping (no deps, no build step).
+          node-version: "22"
+
+      - name: Sync
+        id: sync
+        env:
+          DOCS_FORCE: ${{ inputs.force && '1' || '' }}
+        run: |
+          set -o pipefail
+          code=0
+          node src/sync-claude-docs.ts 2>&1 | tee sync.log || code=$?
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          # The one-line tally: "N added · N updated · N removed · N unchanged"
+          tally=$(grep -E '^[0-9]+ added' sync.log | tail -1)
+          echo "tally=${tally:-sync produced no tally}" >> "$GITHUB_OUTPUT"
+
+      - name: Job summary
+        if: always()
+        run: |
+          {
+            echo "### Docs sync"
+            echo
+            echo "\`${{ steps.sync.outputs.tally }}\`"
+            echo
+            echo '<details><summary>Full output</summary>'
+            echo
+            echo '```'
+            cat sync.log 2>/dev/null || echo "(no output)"
+            echo '```'
+            echo
+            echo '</details>'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # Commit whatever landed, even on a partial failure — losing 189 good pages
+      # because 2 timed out is worse than a slightly stale mirror.
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # git diff misses untracked files, and the manifest's syncedAt rewrites
+          # every run — so ask git status, and ignore a manifest-only change.
+          if [ -z "$(git status --porcelain -- docs ':(exclude)docs/.sync-manifest.json')" ]; then
+            echo "No doc changes; skipping commit."
+            exit 0
+          fi
+          git add -A docs
+          git commit -m "sync $(date -u +%F)" -m "${{ steps.sync.outputs.tally }}"
+          git push
+
+      - name: Fail if any page failed to fetch
+        if: always() && steps.sync.outputs.code != '0'
+        run: |
+          echo "::error::sync-claude-docs.ts exited ${{ steps.sync.outputs.code }} — see the FAILED list above."
+          exit 1

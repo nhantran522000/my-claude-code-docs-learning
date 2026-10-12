@@ -126,7 +126,7 @@ Use the Agent SDK to build an AI agent that reads your code, finds bugs, and fix
     See the setup guides for [Amazon Bedrock](/docs/en/amazon-bedrock), [Claude Platform on AWS](/docs/en/claude-platform-on-aws), [Google Cloud's Agent Platform](/docs/en/google-vertex-ai), or [Microsoft Foundry](/docs/en/microsoft-foundry) for details.
 
     <Note>
-      Unless previously approved, Anthropic does not allow third party developers to offer claude.ai login or rate limits for their products, including agents built on the Claude Agent SDK. Please use the API key authentication methods described in this document instead.
+      Unless previously approved, Anthropic does not allow third party developers to offer claude.ai login or rate limits for their products, including agents built on the Claude Agent SDK. Use the API key authentication methods described in this document instead.
     </Note>
   </Step>
 </Steps>
@@ -350,11 +350,11 @@ Each of these snippets sets fields on the same options object. For more informat
 
 **Tools** control what your agent can do:
 
-| Tools                                  | What the agent can do   |
-| -------------------------------------- | ----------------------- |
-| `Read`, `Glob`, `Grep`                 | Read-only analysis      |
-| `Read`, `Edit`, `Glob`                 | Analyze and modify code |
-| `Read`, `Edit`, `Bash`, `Glob`, `Grep` | Full automation         |
+| Tools | What the agent can do |
+| - | - |
+| `Read`, `Glob`, `Grep` | Read-only analysis |
+| `Read`, `Edit`, `Glob` | Analyze and modify code |
+| `Read`, `Edit`, `Bash`, `Glob`, `Grep` | Full automation |
 
 **Permission modes** control how much human oversight you want. The SDK evaluates the active mode together with your allow and deny rules in a fixed order, described in [How permissions are evaluated](/docs/en/agent-sdk/permissions#how-permissions-are-evaluated). For the full list of modes, their behavior, and when to use each, see [Permission mode in How the agent loop works](/docs/en/agent-sdk/agent-loop#permission-mode).
 

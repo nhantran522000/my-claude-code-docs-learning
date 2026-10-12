@@ -8,10 +8,10 @@
 
 Claude Code provides analytics dashboards to help organizations understand developer usage patterns, track contribution metrics, and measure how Claude Code impacts engineering velocity. Access the dashboard for your plan:
 
-| Plan                          | Dashboard URL                                                              | Includes                                                                              | Read more                                            |
-| ----------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| Plan | Dashboard URL | Includes | Read more |
+| - | - | - | - |
 | Claude for Teams / Enterprise | [claude.ai/analytics/claude-code](https://claude.ai/analytics/claude-code) | Usage metrics, contribution metrics with GitHub integration, leaderboard, data export | [Details](#access-analytics-for-team-and-enterprise) |
-| API (Claude Console)          | [platform.claude.com/claude-code](https://platform.claude.com/claude-code) | Usage metrics, spend tracking, team insights                                          | [Details](#access-analytics-for-api-customers)       |
+| API (Claude Console) | [platform.claude.com/claude-code](https://platform.claude.com/claude-code) | Usage metrics, spend tracking, team insights | [Details](#access-analytics-for-api-customers) |
 
 ## Access analytics for Team and Enterprise
 
@@ -63,7 +63,7 @@ Data typically appears within 24 hours after enabling, with daily updates. If no
 * **"GitHub app required"**: install the GitHub app to view contribution metrics
 * **"Data processing in progress"**: check back in a few days and confirm the GitHub app is installed if data doesn't appear
 
-Contribution metrics support GitHub Cloud and GitHub Enterprise Server.
+Contribution metrics cover repositories hosted on github.com. For repositories on [GitHub Enterprise Server](/docs/en/github-enterprise-server), the analytics dashboard shows usage metrics only.
 
 ### Review summary metrics
 

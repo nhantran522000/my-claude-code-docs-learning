@@ -38,12 +38,12 @@ Tools are what make Claude Code agentic. Without tools, Claude can only respond 
 
 The built-in tools generally fall into five categories, each representing a different kind of agency.
 
-| Category              | What Claude can do                                                                                                                                   |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **File operations**   | Read files, edit code, create new files, rename and reorganize                                                                                       |
-| **Search**            | Find files by pattern, search content with regex, explore codebases                                                                                  |
-| **Execution**         | Run shell commands, start servers, run tests, use git                                                                                                |
-| **Web**               | Search the web, fetch documentation, look up error messages                                                                                          |
+| Category | What Claude can do |
+| - | - |
+| **File operations** | Read files, edit code, create new files, rename and reorganize |
+| **Search** | Find files by pattern, search content with regex, explore codebases |
+| **Execution** | Run shell commands, start servers, run tests, use git |
+| **Web** | Search the web, fetch documentation, look up error messages |
 | **Code intelligence** | See type errors and warnings after edits, jump to definitions, find references (requires [code intelligence plugins](/docs/en/plugins/code-intelligence)) |
 
 These are the primary capabilities. Claude also has tools for spawning subagents, asking you questions, and other orchestration tasks. See [Tools available to Claude](/docs/en/tools-reference) for the complete list.
@@ -68,7 +68,7 @@ When you run `claude` in a directory, Claude Code gains access to:
 * **Your project.** Files in your directory and subdirectories, plus files elsewhere with your permission.
 * **Your terminal.** Any command you could run: build tools, git, package managers, system utilities, scripts. If you can do it from the command line, Claude can too.
 * **Your git state.** Current branch, uncommitted changes, and recent commit history.
-* **Your [CLAUDE.md](/docs/en/memory).** A markdown file where you store project-specific instructions, conventions, and context that Claude should know every session. If your repository has an AGENTS.md for other coding agents, Claude [can read that](/docs/en/memory#agents-md) on its own or alongside CLAUDE.md.
+* **Your [CLAUDE.md](/docs/en/memory).** A markdown file where you store project-specific instructions, conventions, and context that Claude should know every session. If your repository has an AGENTS.md for other coding agents, Claude [can read that](/docs/en/memory#agents-md) in place of a CLAUDE.md.
 * **[Auto memory](/docs/en/memory#auto-memory).** Learnings Claude saves automatically as you work, like your preferences. The first 200 lines or 25KB of MEMORY.md, whichever comes first, load at the start of each session.
 * **Extensions you configure.** [MCP servers](/docs/en/mcp) for external services, [skills](/docs/en/skills) for workflows, [subagents](/docs/en/sub-agents) for delegated work, and [Claude in Chrome](/docs/en/chrome) for browser interaction.
 
@@ -82,11 +82,11 @@ The [agentic loop](#the-agentic-loop), [tools](#tools), and capabilities are the
 
 Claude Code runs in three environments, each with different tradeoffs for where your code executes.
 
-| Environment        | Where code runs                                                                                               | Use case                                                   |
-| ------------------ | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| **Local**          | Your machine                                                                                                  | Default. Full access to your files, tools, and environment |
-| **Cloud**          | Anthropic-managed VMs, or [self-hosted environments](/docs/en/self-hosted-environments) your organization operates | Offload tasks, work on repos you don't have locally        |
-| **Remote Control** | Your machine, controlled from a browser                                                                       | Use the web UI while execution and your files stay local   |
+| Environment | Where code runs | Use case |
+| - | - | - |
+| **Local** | Your machine | Default. Full access to your files, tools, and environment |
+| **Cloud** | Anthropic-managed VMs, or [self-hosted environments](/docs/en/self-hosted-environments) your organization operates | Offload tasks, work on repos you don't have locally |
+| **Remote Control** | Your machine, controlled from a browser | Use the web UI while execution and your files stay local |
 
 ### Interfaces
 

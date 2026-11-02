@@ -8,14 +8,14 @@
 
 Claude Code can suggest installing a plugin from your organization's marketplace when a user's session matches signals you define for that plugin. Signals include the working directory, files Claude has read, and commands Claude has run. You define them by adding a `relevance` block to the plugin's entry in `marketplace.json`.
 
-A marketplace operator writes the `relevance` entries. An administrator then allowlists the marketplace in managed settings. Users see no suggestions from a marketplace until it's allowlisted.
+A marketplace operator writes the `relevance` entries. An administrator then allowlists the marketplace in managed settings. In the terminal, users see no suggestions from a marketplace until it's allowlisted.
 
-<Note>
-  These cases are covered on other pages:
-
-  * **You want to install plugins**: see [Install and manage plugins](/docs/en/plugins/install)
-  * **You want to turn suggestions off**: see [Understand how plugin relevance works](#understand-how-plugin-relevance-works)
-</Note>
+> [!NOTE]
+>
+> These cases are covered on other pages:
+>
+> * **You want to install plugins**: see [Install and manage plugins](https://code.claude.com/docs/en/plugins/install.md)
+> * **You want to turn suggestions off**: see [Understand how plugin relevance works](#understand-how-plugin-relevance-works), or for the suggestions Claude makes in a cloud session's conversation, [Turn off plugin suggestions](https://code.claude.com/docs/en/claude-code-on-the-web.md#turn-off-plugin-suggestions)
 
 Start with the sections for your role:
 
@@ -38,7 +38,7 @@ When a signal matches and the plugin isn't already installed, Claude Code sugges
 
 Claude Code never installs the plugin automatically. The user always confirms.
 
-The spinner tip and the session-start notification both stop appearing when the user or project sets [`spinnerTipsEnabled`](/docs/en/settings-reference#spinnertipsenabled) to `false`, or when a [`spinnerTipsOverride`](/docs/en/settings-reference#spinnertipsoverride) with `excludeDefault` replaces the built-in tips. The Discover-tab pin isn't affected by either setting.
+The spinner tip and the session-start notification both stop appearing when the user or project sets [`spinnerTipsEnabled`](https://code.claude.com/docs/en/settings-reference#spinnertipsenabled) to `false`, or when a [`spinnerTipsOverride`](https://code.claude.com/docs/en/settings-reference#spinnertipsoverride) with `excludeDefault` replaces the built-in tips. The Discover-tab pin isn't affected by either setting.
 
 ## Add relevance to a plugin entry
 
@@ -77,9 +77,9 @@ Older clients still load a marketplace that uses `relevance` fields they don't r
 
 ### `relevance`
 
-| Field     | Type   | Description                                                                                                                                                             |
-| :-------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `topic`   | string | Optional. The phrase that fills "Working with *topic*?" in the spinner tip. Defaults to the plugin name with each hyphen segment capitalized. Maximum 64 characters.    |
+| Field | Type | Description |
+| :- | :- | :- |
+| `topic` | string | Optional. The phrase that fills "Working with *topic*?" in the spinner tip. Defaults to the plugin name with each hyphen segment capitalized. Maximum 64 characters. |
 | `signals` | object | Matchers that determine when the plugin is relevant. Claude Code suggests the plugin only if at least one signal is set. See [`relevance.signals`](#relevance-signals). |
 
 The `topic` is often the product name, for example `Terraform`. Use a domain such as `design` when the plugin name doesn't sound natural as a topic.
@@ -88,12 +88,12 @@ The `topic` is often the product name, for example `Terraform`. Use a domain suc
 
 The `signals` object accepts the following fields.
 
-| Field          | Type             | Description                                                                                                                                                                                                                                 | Limit                                                                                        |
-| :------------- | :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------- |
-| `cwd`          | array of strings | Glob patterns matched against the session's working directory. See [working directory matching](#working-directory-matching).                                                                                                               | 10 patterns of 256 characters each                                                           |
-| `cli`          | array of strings | Command names from shell commands Claude has run this session, for example `["terraform"]`. Exact match. See [command name matching](#command-name-matching).                                                                               | 10 entries of 64 characters each                                                             |
-| `hosts`        | array of strings | Hostnames seen in `http://` or `https://` URLs in Bash commands this session, for example `["registry.terraform.io"]`. Bare lowercase hostname only: no scheme, port, or path. Exact case-insensitive match.                                | 20 entries of 128 characters each                                                            |
-| `filesRead`    | array of strings | Glob patterns matched against the paths of files Claude has read this session, for example `["**/*.tf"]`. Forward-slash normalized and case-insensitive.                                                                                    | 10 patterns of 256 characters each                                                           |
+| Field | Type | Description | Limit |
+| :- | :- | :- | :- |
+| `cwd` | array of strings | Glob patterns matched against the session's working directory. See [working directory matching](#working-directory-matching). | 10 patterns of 256 characters each |
+| `cli` | array of strings | Command names from shell commands Claude has run this session, for example `["terraform"]`. Exact match. See [command name matching](#command-name-matching). | 10 entries of 64 characters each |
+| `hosts` | array of strings | Hostnames seen in `http://` or `https://` URLs in Bash commands this session, for example `["registry.terraform.io"]`. Bare lowercase hostname only: no scheme, port, or path. Exact case-insensitive match. | 20 entries of 128 characters each |
+| `filesRead` | array of strings | Glob patterns matched against the paths of files Claude has read this session, for example `["**/*.tf"]`. Forward-slash normalized and case-insensitive. | 10 patterns of 256 characters each |
 | `manifestDeps` | array of objects | Dependencies declared in package manifests Claude has read this session. Each entry is `{ "file": "...", "pattern": "..." }`, where both values are regular expressions. See [manifest dependency matching](#manifest-dependency-matching). | 10 entries, each value at most 256 characters. Manifest files larger than 512 KB are skipped |
 
 The `filesRead` and `manifestDeps` signals also match against files Claude has written or edited this session and against the project's auto-loaded `CLAUDE.md` memory files.
@@ -158,12 +158,12 @@ Each finding prints with the path of the field it concerns, and the output ends 
 
 ## Enable suggestions in managed settings
 
-Users see no suggestions from a marketplace until an administrator allowlists it in [managed settings](/docs/en/plugins/org), even when its `marketplace.json` declares `relevance`.
+In the terminal, users see no suggestions from a marketplace until an administrator allowlists it in [managed settings](https://code.claude.com/docs/en/plugins/org.md), even when its `marketplace.json` declares `relevance`.
 
 To allowlist a marketplace, edit your managed settings as follows:
 
 * Add the marketplace name to `pluginSuggestionMarketplaces`.
-* For any marketplace other than the official Anthropic marketplace, also declare the marketplace source, either as that name's entry in [`extraKnownMarketplaces`](/docs/en/plugins/org#require-a-marketplace-and-its-plugins) or as an entry in [`strictKnownMarketplaces`](/docs/en/plugins/org#allowlist-with-strictknownmarketplaces).
+* For any marketplace other than the official Anthropic marketplace, also declare the marketplace source, either as that name's entry in [`extraKnownMarketplaces`](https://code.claude.com/docs/en/plugins/org#require-a-marketplace-and-its-plugins) or as an entry in [`strictKnownMarketplaces`](https://code.claude.com/docs/en/plugins/org#allowlist-with-strictknownmarketplaces).
 
 On a machine where the marketplace isn't registered, or is registered under the allowlisted name from a different source, no suggestions from it appear. The source check stops an unrelated source from registering under an allowlisted name to get its plugins suggested across your org.
 
@@ -217,7 +217,7 @@ Claude Code limits how often it suggests a given plugin:
 
 ## See also
 
-* [Host a marketplace](/docs/en/plugins/host-marketplace): run the marketplace that hosts your plugins
-* [Marketplace reference](/docs/en/plugins/marketplace-reference#plugin-entries): every field a plugin entry accepts
-* [Recommend your plugin from your CLI](/docs/en/plugins/cli-hints): prompt users from your own CLI instead of from Claude Code's session signals
-* [Manage plugins for your organization](/docs/en/plugins/org): `extraKnownMarketplaces`, `strictKnownMarketplaces`, and the rest of the plugin policy keys
+* [Host a marketplace](https://code.claude.com/docs/en/plugins/host-marketplace.md): run the marketplace that hosts your plugins
+* [Marketplace reference](https://code.claude.com/docs/en/plugins/marketplace-reference.md#plugin-entries): every field a plugin entry accepts
+* [Recommend your plugin from your CLI](https://code.claude.com/docs/en/plugins/cli-hints.md): prompt users from your own CLI instead of from Claude Code's session signals
+* [Manage plugins for your organization](https://code.claude.com/docs/en/plugins/org.md): `extraKnownMarketplaces`, `strictKnownMarketplaces`, and the rest of the plugin policy keys

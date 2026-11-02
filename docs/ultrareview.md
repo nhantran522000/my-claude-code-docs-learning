@@ -85,7 +85,7 @@ When the post finishes, Claude tells you the outcome:
 
 ### Pass a request in plain words
 
-On Claude Code v2.1.218 or later, you can also describe what you're working on in plain words:
+You can also describe what you're working on in plain words:
 
 ```text theme={null}
 /code-review ultra check my auth changes
@@ -120,8 +120,9 @@ Ultrareview is a premium feature that bills against usage credits rather than yo
 | - | - | - |
 | Pro | 3 free runs | billed as [usage credits](https://support.claude.com/en/articles/12429409-extra-usage-for-paid-claude-plans) |
 | Max | 3 free runs | billed as [usage credits](https://support.claude.com/en/articles/12429409-extra-usage-for-paid-claude-plans) |
+| Ultra | 3 free runs | billed as [usage credits](https://support.claude.com/en/articles/12429409-extra-usage-for-paid-claude-plans) |
 
-* **Free runs**: the three Pro and Max runs are a one-time allotment per account and don't refresh.
+* **Free runs**: the three Pro, Max, and Ultra runs are a one-time allotment per account and don't refresh.
 * **Cost per review**: after you use the free runs, typically \$5 to \$25 in usage credits depending on the size of the change, matching the estimate the launch dialog shows before each run.
 * **When a run counts**: once the cloud session starts. A review you stop early or that fails to complete still uses a free run; a paid review bills only for the portion that ran.
 
@@ -133,7 +134,7 @@ Claude Code asks you to confirm usage-credits billing once per conversation: whe
 
 ## Track a running review
 
-A review typically takes 15 to 25 minutes. The review runs as a background task, so you can keep working in your session or start other commands. If you chose to [post the findings to the pull request](#post-findings-to-the-pull-request), keep the session open until the review finishes; if the session ends first, Claude Code posts nothing.
+A review typically takes 5 to 15 minutes. The review runs as a background task, so you can keep working in your session or start other commands. If you chose to [post the findings to the pull request](#post-findings-to-the-pull-request), keep the session open until the review finishes; if the session ends first, Claude Code posts nothing.
 
 Use `/tasks` to see running and completed reviews, open the detail view for a review, or stop a review that is in progress. If you stop a review, Claude Code archives the cloud session and doesn't return partial findings.
 
@@ -159,7 +160,9 @@ Without arguments, the subcommand reviews the diff between your current branch a
 
 You consent to the whole-repository fallback and to the billing and terms prompt when you run the subcommand, so the run doesn't stop to confirm them. Running it yourself is what counts as consent. When Claude runs the subcommand for you instead, for example through the Bash tool, Claude Code refuses the whole-repository review.
 
-`claude -p '/code-review ultra'` doesn't get you the findings, so use `claude ultrareview` in scripts. The `-p` run launches the cloud review and exits without waiting for it. When the review would bill usage credits, the `-p` run stops without launching it. Before v2.1.218, `/code-review ultra` in a non-interactive session ran a local review.
+> [!NOTE]
+>
+> `claude -p '/code-review ultra'` doesn't get you the findings, so use `claude ultrareview` in scripts. The `-p` run launches the cloud review and exits without waiting for it. When the review would bill usage credits, the `-p` run stops without launching it.
 
 | Flag | Description |
 | - | - |
@@ -209,7 +212,7 @@ Both reviews examine code, but you use them at different stages of your workflow
 | Target | your working diff, a pull request, a branch, or a path | your working diff or a pull request |
 | Runs | locally in your session | in a cloud sandbox |
 | Depth | scales with the effort argument | multi-agent fleet with independent verification |
-| Duration | seconds to a few minutes | roughly 15 to 25 minutes |
+| Duration | seconds to a few minutes | roughly 5 to 15 minutes |
 | Cost | counts toward normal usage | free runs, then roughly \$5 to \$25 per review as usage credits |
 | Best for | quick feedback while iterating | pre-merge confidence on substantial changes |
 

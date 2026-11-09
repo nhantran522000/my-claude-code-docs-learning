@@ -12,7 +12,9 @@ For installation, authentication, and connectivity problems, see [Troubleshoot i
 
 ## See what loaded into context
 
-The `/context` command shows everything occupying the context window for the current session, broken down by category: system prompt, system tools, MCP tools, custom subagents with the source each loaded from, memory files, skills, and conversation messages. Run it first to confirm whether your `CLAUDE.md`, rules, or skill descriptions are present at all. The skills section in `/context` also includes [bundled skills](https://code.claude.com/docs/en/skills.md#bundled-skills), which `/skills` doesn't list.
+The `/context` command shows everything occupying the context window for the current session. It breaks this down by category: system prompt, system tools, MCP tools, custom subagents with the source each loaded from, memory files, skills, and conversation messages. Run it first to confirm whether your `CLAUDE.md`, rules, or skill descriptions are present at all. The skills section in `/context` also includes [bundled skills](https://code.claude.com/docs/en/skills.md#bundled-skills), which `/skills` doesn't list.
+
+In [fullscreen mode](https://code.claude.com/docs/en/fullscreen.md), `/context` collapses the per-item breakdown, so run `/context all` to expand it.
 
 For detail on a specific category, follow up with the dedicated command:
 
@@ -95,39 +97,39 @@ If the problem persists in safe mode, or your settings themselves are suspect, s
 
 In your shell, with no Claude Code session running, create the directory and move into it:
 
-**Bash or Zsh**
+> [tab] Bash or Zsh
+>
+> ```bash theme={null}
+> mkdir -p ~/claude-clean/empty && cd ~/claude-clean/empty
+> ```
 
-```bash theme={null}
-mkdir -p ~/claude-clean/empty && cd ~/claude-clean/empty
-```
-
-**PowerShell**
-
-```powershell theme={null}
-New-Item -ItemType Directory -Force "$HOME/claude-clean/empty" | Out-Null
-Set-Location "$HOME/claude-clean/empty"
-```
+> [tab] PowerShell
+>
+> ```powershell theme={null}
+> New-Item -ItemType Directory -Force "$HOME/claude-clean/empty" | Out-Null
+> Set-Location "$HOME/claude-clean/empty"
+> ```
 
 **2. Start Claude Code with a clean configuration directory**
 
 From the same shell, set [`CLAUDE_CONFIG_DIR`](https://code.claude.com/docs/en/env-vars) to a fresh directory in place of `~/.claude`, and pass [`--setting-sources user`](https://code.claude.com/docs/en/cli-reference#cli-flags) to turn off project configuration such as `.claude/settings.json`, `CLAUDE.md`, and `.mcp.json`:
 
-**Bash or Zsh**
+> [tab] Bash or Zsh
+>
+> The variable applies to this one launch.
+>
+> ```bash theme={null}
+> CLAUDE_CONFIG_DIR=~/claude-clean/config claude --setting-sources user
+> ```
 
-The variable applies to this one launch.
-
-```bash theme={null}
-CLAUDE_CONFIG_DIR=~/claude-clean/config claude --setting-sources user
-```
-
-**PowerShell**
-
-The variable stays set for the rest of this PowerShell session, so later `claude` launches in the same window keep using the clean directory. To return to your usual directory, run `Remove-Item Env:CLAUDE_CONFIG_DIR` before the next launch.
-
-```powershell theme={null}
-$env:CLAUDE_CONFIG_DIR = "$HOME/claude-clean/config"
-claude --setting-sources user
-```
+> [tab] PowerShell
+>
+> The variable stays set for the rest of this PowerShell session, so later `claude` launches in the same window keep using the clean directory. To return to your usual directory, run `Remove-Item Env:CLAUDE_CONFIG_DIR` before the next launch.
+>
+> ```powershell theme={null}
+> $env:CLAUDE_CONFIG_DIR = "$HOME/claude-clean/config"
+> claude --setting-sources user
+> ```
 
 On the first launch, you go through the first-run setup screens again, a sign that the clean configuration directory is in effect. Managed settings still apply, and [connectors](https://code.claude.com/docs/en/mcp.md#use-mcp-servers-from-claude-ai) still load if you log in with a claude.ai account.
 

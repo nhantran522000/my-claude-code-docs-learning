@@ -8,17 +8,17 @@
 
 Zero Data Retention (ZDR) for Claude Code is available to qualified accounts on Claude for Enterprise. When ZDR is enabled, prompts and model responses generated during Claude Code sessions are processed in real time and not stored by Anthropic after the response is returned, except where needed to comply with law or combat misuse.
 
-<Note>
-  ZDR is not included in the standard Claude for Enterprise plan and cannot be enabled from your admin settings. It is available to qualified accounts and requires separate enablement by Anthropic. If your organization requires ZDR, [contact sales](https://www.anthropic.com/contact-sales?utm_source=claude_code\&utm_medium=docs\&utm_content=zero_data_retention_request) or your Anthropic account team to confirm eligibility.
-</Note>
+> [!NOTE]
+>
+> ZDR is not included in the standard Claude for Enterprise plan and cannot be enabled from your admin settings. It is available to qualified accounts and requires separate enablement by Anthropic. If your organization requires ZDR, [contact sales](https://www.anthropic.com/contact-sales?utm_source=claude_code\&utm_medium=docs\&utm_content=zero_data_retention_request) or your Anthropic account team to confirm eligibility.
 
-Claude for Enterprise organizations that have enabled HIPAA can bring the Claude Code CLI and the Code tab in Claude Desktop under their Business Associate Agreement (BAA) without ZDR once the HIPAA configuration is applied to Claude Code (local mode) and Cowork (local mode). See [Set up Claude Code (local mode) for a HIPAA-ready organization](/docs/en/hipaa-setup). Organizations without the HIPAA configuration still need ZDR for BAA coverage of Claude Code. See the [Implementation Guide](https://trust.anthropic.com/resources?s=l1wrssd9hsbi4gak0tp5a6\&name=%5Banthropic%5D-hipaa-ready-offering-implementation-guide) for a list of Eligible Services.
+Claude for Enterprise organizations that have enabled HIPAA can bring the Claude Code CLI and the Code tab in Claude Desktop under their Business Associate Agreement (BAA) without ZDR once the HIPAA configuration is applied to Claude Code (local mode) and Cowork (local mode). See [Set up Claude Code (local mode) for a HIPAA-ready organization](https://code.claude.com/docs/en/hipaa-setup.md). Organizations without the HIPAA configuration still need ZDR for BAA coverage of Claude Code. See the [Implementation Guide](https://trust.anthropic.com/resources?s=l1wrssd9hsbi4gak0tp5a6\&name=%5Banthropic%5D-hipaa-ready-offering-implementation-guide) for a list of Eligible Services.
 
 ZDR on Claude for Enterprise gives enterprise customers the ability to use Claude Code with zero data retention and access administrative capabilities:
 
 * Cost controls per user
-* [Analytics](/docs/en/analytics) dashboard
-* [Server-managed settings](/docs/en/server-managed-settings)
+* [Analytics](https://code.claude.com/docs/en/analytics.md) dashboard
+* [Server-managed settings](https://code.claude.com/docs/en/server-managed-settings.md)
 * Audit logs
 
 ZDR for Claude Code on Claude for Enterprise applies only to Anthropic's direct platform. For Claude deployments on Amazon Bedrock, Google Cloud's Agent Platform, or Microsoft Foundry, refer to those platforms' data retention policies.
@@ -27,13 +27,13 @@ ZDR for Claude Code on Claude for Enterprise applies only to Anthropic's direct 
 
 ZDR covers Claude Code inference on Claude for Enterprise.
 
-<Warning>
-  ZDR is enabled on a per-organization basis. Each new organization requires ZDR to be enabled separately by your Anthropic account team. ZDR does not automatically apply to new organizations created under the same account. Contact your account team to enable ZDR for any new organizations.
-</Warning>
+> [!WARNING]
+>
+> ZDR is enabled on a per-organization basis. Each new organization requires ZDR to be enabled separately by your Anthropic account team. ZDR does not automatically apply to new organizations created under the same account. Contact your account team to enable ZDR for any new organizations.
 
 ### Route Claude Code traffic to your ZDR organization
 
-ZDR applies to requests that authenticate into a ZDR-enabled organization. If a developer signs in to Claude Code with a personal account or with an API key from a different organization, those sessions are not covered. To require that developers' claude.ai logins belong to your ZDR organization, deploy the `forceLoginMethod` and `forceLoginOrgUUID` managed settings; see [Restrict login to your organization](/docs/en/authentication#restrict-login-to-your-organization), which also explains how these keys treat Claude Console logins.
+ZDR applies to requests that authenticate into a ZDR-enabled organization. If a developer signs in to Claude Code with a personal account or with an API key from a different organization, those sessions are not covered. To require that developers' claude.ai logins belong to your ZDR organization, deploy the `forceLoginMethod` and `forceLoginOrgUUID` managed settings; see [Restrict login to your organization](https://code.claude.com/docs/en/authentication.md#restrict-login-to-your-organization), which also explains how these keys treat Claude Console logins.
 
 ### What ZDR covers
 
@@ -41,13 +41,15 @@ ZDR covers model inference calls made through Claude Code on Claude for Enterpri
 
 ### What ZDR does not cover
 
-ZDR does not extend to the following, even for organizations with ZDR enabled. These features follow [standard data retention policies](/docs/en/data-usage#data-retention):
+ZDR does not extend to the following, even for organizations with ZDR enabled. Except where a row says otherwise, these features follow [standard data retention policies](https://code.claude.com/docs/en/data-usage.md#data-retention):
 
 | Feature | Details |
 | - | - |
 | Chat on claude.ai | Chat conversations through the Claude for Enterprise web interface are not covered by ZDR. |
 | Cowork | Cowork sessions are not covered by ZDR. |
-| Claude Code Analytics | Does not store prompts or model responses, but collects productivity metadata such as account emails and usage statistics. Contribution metrics are not available for ZDR organizations; the [analytics dashboard](/docs/en/analytics) shows usage metrics only. |
+| Artifacts | Artifacts in chat conversations and Cowork sessions are not covered by ZDR, and are kept until deleted unless your organization sets a retention period for them. Artifacts are not available in Claude Code with ZDR. |
+| Claude in Chrome | The [Claude in Chrome](https://support.claude.com/en/articles/13065128-claude-in-chrome-admin-controls) browser extension is not covered by ZDR. It is [not available in Claude Code](https://code.claude.com/docs/en/chrome.md#chrome-availability-with-hipaa-or-zero-data-retention) with ZDR, but members can still use it outside Claude Code where your organization allows it. |
+| Claude Code Analytics | Does not store prompts or model responses, but collects productivity metadata such as account emails and usage statistics. Contribution metrics are not available for ZDR organizations; the [analytics dashboard](https://code.claude.com/docs/en/analytics.md) shows usage metrics only. |
 | User and seat management | Administrative data such as account emails and seat assignments is retained under standard policies. |
 | Third-party integrations | Data processed by third-party tools, MCP servers, or other external integrations is not covered by ZDR. Review those services' data handling practices independently. |
 
@@ -57,12 +59,13 @@ When ZDR is enabled for a Claude Code organization on Claude for Enterprise, cer
 
 | Feature | Reason |
 | - | - |
-| [Cloud sessions](/docs/en/claude-code-on-the-web), including those started from the [Desktop app](/docs/en/desktop#cloud-sessions) | Requires server-side storage of session data, including conversation history with prompts and completions. |
+| [Cloud sessions](https://code.claude.com/docs/en/claude-code-on-the-web.md), including those started from the [Desktop app](https://code.claude.com/docs/en/desktop.md#cloud-sessions) | Requires server-side storage of session data, including conversation history with prompts and completions. |
 | [Chat and Cowork unified](https://support.claude.com/en/articles/17444462-set-up-and-manage-the-new-unified-claude-experience-for-your-enterprise-organization) | Requires cloud sessions. |
 | [Claude Tag](https://claude.com/docs/claude-tag) | Retains channel memory and session transcripts. |
-| [Artifacts](/docs/en/artifacts) | Requires storing published page content on Anthropic-operated infrastructure. |
+| [Artifacts](https://code.claude.com/docs/en/artifacts.md) in Claude Code | Requires storing published page content on Anthropic-operated infrastructure. |
+| [Claude Docs](https://support.claude.com/en/articles/16923645-get-started-with-claude-docs) | Requires storing document content on Anthropic-operated infrastructure. |
 | Feedback submission (`/feedback`, `/bug`, `/share`) | Submitting feedback sends conversation data to Anthropic. |
-| [Remote Control](/docs/en/remote-control) | Stores the session transcript on Anthropic servers to sync the conversation across devices. |
+| [Remote Control](https://code.claude.com/docs/en/remote-control.md) | Stores the session transcript on Anthropic servers to sync the conversation across devices. |
 
 These features are blocked in the backend regardless of client-side display. If you see a disabled feature in the Claude Code terminal during startup, attempting to use it returns an error indicating the organization's policies do not allow that action.
 
@@ -70,9 +73,9 @@ Future features may also be disabled if they require storing prompts or completi
 
 ### Model availability under ZDR
 
-Claude Fable 5.1 and Fable 5 are [Covered Models](https://support.claude.com/en/articles/15425695-covered-models) that [require data retention](https://platform.claude.com/docs/en/manage-claude/api-and-data-retention#model-specific-data-retention-requirements) by default, and whether a ZDR organization or workspace can use them is governed by the Covered Models policies rather than by Claude Code. Where your organization can't use them, the models are either absent from the `/model` picker or shown as disabled, and the server rejects requests for them regardless of client configuration.
+Claude Fable 5.2, Fable 5.1, and Fable 5 are [Covered Models](https://support.claude.com/en/articles/15425695-covered-models) that [require data retention](https://platform.claude.com/docs/en/manage-claude/api-and-data-retention#model-specific-data-retention-requirements) by default, and whether a ZDR organization or workspace can use them is governed by the Covered Models policies rather than by Claude Code. Where your organization can't use them, the models are either absent from the `/model` picker or shown as disabled, and the server rejects requests for them regardless of client configuration.
 
-Other models remain available under ZDR. Fable models are not the default, and the `best` alias, which resolves to the latest Fable model where it is available, resolves to Opus for organizations where it is not.
+Other models remain available under ZDR. Fable models aren't the default, and the `best` alias resolves to Opus.
 
 ## Data retention for policy violations
 

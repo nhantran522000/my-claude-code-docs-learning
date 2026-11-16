@@ -466,7 +466,7 @@ Work on a feature in one terminal while Claude fixes a bug in another, without t
 claude --worktree feature-auth
 ```
 
-Run the same command with a different name in a second terminal to start an isolated parallel session. In a repository with no commits, the command fails with `Failed to resolve base branch "HEAD": git rev-parse failed`. See [Worktrees](https://code.claude.com/docs/en/worktrees.md) for cleanup, `.worktreeinclude`, and non-git VCS support. To monitor parallel sessions from one screen instead of separate terminals, see [background agents](https://code.claude.com/docs/en/agent-view.md).
+Run the same command with a different name in a second terminal to start an isolated parallel session. See [Worktrees](https://code.claude.com/docs/en/worktrees.md) for cleanup, `.worktreeinclude`, and non-git VCS support. To monitor parallel sessions from one screen instead of separate terminals, see [background agents](https://code.claude.com/docs/en/agent-view.md).
 
 ## Plan before editing
 
@@ -500,18 +500,18 @@ See [Non-interactive mode](https://code.claude.com/docs/en/headless.md) for outp
 
 ## Next steps
 
-> **[Best practices](https://code.claude.com/docs/en/best-practices.md)**
+> [card] [Best practices](https://code.claude.com/docs/en/best-practices.md)
 >
 > Patterns for getting the most out of Claude Code
 
-> **[Manage sessions](https://code.claude.com/docs/en/sessions.md)**
+> [card] [Manage sessions](https://code.claude.com/docs/en/sessions.md)
 >
 > Resume, name, and branch conversations
 
-> **[Worktrees](https://code.claude.com/docs/en/worktrees.md)**
+> [card] [Worktrees](https://code.claude.com/docs/en/worktrees.md)
 >
 > Run isolated parallel sessions
 
-> **[Extend Claude Code](https://code.claude.com/docs/en/features-overview.md)**
+> [card] [Extend Claude Code](https://code.claude.com/docs/en/features-overview.md)
 >
 > Add skills, hooks, MCP, subagents, and plugins

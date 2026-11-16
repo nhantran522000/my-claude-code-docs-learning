@@ -257,7 +257,7 @@ Run these inside Claude Code after it starts.
 
 | Command | What it does | Example |
 | - | - | - |
-| `/clear` | Clear conversation history | `/clear` |
+| `/clear` | Start a new conversation. Resume the previous one with `/resume`. | `/clear` |
 | `/help` | Show available commands | `/help` |
 | `/exit` or Ctrl+D twice | Exit Claude Code | `/exit` |
 

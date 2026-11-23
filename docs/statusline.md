@@ -15,7 +15,7 @@ Status lines are useful when you:
 * Work across multiple sessions and need to distinguish them
 * Want git branch and status always visible
 
-The status line renders in its own row above the built-in footer badges and does not replace them. With a custom status line configured, Claude Code stops showing most of the footer's keyboard hints, including `esc to interrupt`, the `? for shortcuts` fallback, and the `hold space to speak` [voice dictation](https://code.claude.com/docs/en/voice-dictation.md) hint. To add clickable link badges to the footer when an ID appears in the conversation, without writing a script, configure [`footerLinksRegexes`](https://code.claude.com/docs/en/settings-reference#footerlinksregexes) instead.
+The status line renders in its own row above the built-in footer badges and doesn't replace them. With a custom status line configured, Claude Code stops showing some footer hints, such as `? for shortcuts` and the `hold space to speak` [voice dictation](https://code.claude.com/docs/en/voice-dictation.md) hint. To add clickable link badges to the footer when an ID appears in the conversation, without writing a script, configure [`footerLinksRegexes`](https://code.claude.com/docs/en/settings-reference#footerlinksregexes) instead.
 
 Here's an example of a [multi-line status line](#display-multiple-lines) that displays git info on the first line and a color-coded context bar on the second.
 
@@ -346,7 +346,7 @@ Claude Code sends the following JSON fields to your script via stdin:
 >
 > **Fields that may be `null`**:
 >
-> * `context_window.current_usage`: `null` before the first API call in a session, and again after `/compact` until the next API call repopulates it
+> * `context_window.current_usage`: see [context window fields](#context-window-fields)
 > * `context_window.used_percentage`, `context_window.remaining_percentage`: may be `null` early in the session
 >
 > Handle missing fields with conditional access and null values with fallback defaults in your scripts.
@@ -356,7 +356,7 @@ Claude Code sends the following JSON fields to your script via stdin:
 The `context_window` object describes the live context window from the most recent API response.
 
 * **Combined totals** (`total_input_tokens`, `total_output_tokens`): tokens currently in the context window. `total_input_tokens` is the sum of `input_tokens`, `cache_creation_input_tokens`, and `cache_read_input_tokens`; `total_output_tokens` is the output tokens from the most recent response. Both are `0` before the first API response.
-* **Per-component usage** (`current_usage`): the same token counts broken out by category. Use this when you need cache hits separate from fresh input.
+* **Per-component usage** (`current_usage`): the same token counts broken out by category. Use this when you need cache hits separate from fresh input. `current_usage` is `null` until the conversation has an API response, and `null` or all zeros after `/compact` until the next API call. Treat both as empty.
 
 The `current_usage` object contains:
 
@@ -370,8 +370,6 @@ For what the cache fields mean and how they're billed, see [check cache performa
 The `used_percentage` field is calculated from input tokens only: `input_tokens + cache_creation_input_tokens + cache_read_input_tokens`. It does not include `output_tokens`.
 
 If you calculate context percentage manually from `current_usage`, use the same input-only formula to match `used_percentage`.
-
-The `current_usage` object is `null` before the first API call in a session, and again immediately after `/compact` until the next API call repopulates it.
 
 ### Spend limit fields
 

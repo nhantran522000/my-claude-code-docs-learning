@@ -65,7 +65,7 @@ async def protect_env_files(input_data, tool_use_id, context):
             }
         }
 
-    # Return empty object to allow the operation
+    # Empty object: no decision, normal permissions apply
     return {}
 
 
@@ -113,7 +113,7 @@ const protectEnvFiles: HookCallback = async (input, toolUseID, { signal }) => {
     };
   }
 
-  // Return empty object to allow the operation
+  // Empty object: no decision, normal permissions apply
   return {};
 };
 
@@ -134,7 +134,7 @@ for await (const message of query({
 }
 ```
 
-The hook denies a Write or Edit call whose `file_path` ends in `/.env`, in any letter case. On Windows, `file_path` uses backslashes, such as `C:\project\.env`, and this hook allows a Write or Edit call to `C:\project\.env`.
+The hook denies a Write or Edit call whose `file_path` ends in `/.env`, in any letter case. On Windows, `file_path` uses backslashes, such as `C:\project\.env`, and this hook doesn't block a Write or Edit call to `C:\project\.env`.
 
 > [!WARNING]
 >
@@ -152,7 +152,7 @@ The SDK provides hooks for different stages of agent execution. Some hooks are a
 | `PostToolBatch` | No | Yes | A full batch of tool calls resolves, once per batch before the next model call | Inject conventions once for the whole batch |
 | [`UserPromptSubmit`](https://code.claude.com/docs/en/hooks#userpromptsubmit) | Yes | Yes | A prompt is submitted, including a turn Claude Code starts on its own | Inject additional context into prompts |
 | [`UserPromptExpansion`](https://code.claude.com/docs/en/hooks#userpromptexpansion) | No | Yes | A user-typed command, or an MCP prompt, expands into a prompt before it reaches Claude. Doesn't fire when Claude invokes a skill itself | Block a command from direct invocation or add context when a skill is typed |
-| `MessageDisplay` | No | Yes | An assistant message with text completes, once per message with the full message text | Redact or reformat the displayed text without changing the transcript |
+| `MessageDisplay` | No | Yes | An assistant message with text completes, once per message with the full message text | Reformat the displayed text without changing the transcript |
 | `Stop` | Yes | Yes | Agent execution stop | Save session state before exit |
 | `StopFailure` | No | Yes | The turn ends with an API error instead of a normal stop | Log failures or send alerts |
 | `SubagentStart` | Yes | Yes | Subagent initialization | Track parallel task spawning |
@@ -250,7 +250,7 @@ Your callback returns an object with two categories of fields:
   * For `PostToolUse` hooks, you can set `additionalContext` to append information to the tool result. To replace the tool's output before Claude sees it, set `updatedToolOutput`, which works for built-in and MCP tools in both SDKs. The older `updatedMCPToolOutput` field replaces MCP tool output only.
   * In the TypeScript SDK, a `PostToolUse` callback can also return `classifierContext`, a short note about the tool call's result for the [auto mode](https://code.claude.com/docs/en/permission-modes.md#eliminate-prompts-with-auto-mode) permission classifier. Because your callback runs in your application's own process, the classifier may weigh a user statement you relay in the note as user intent. The field requires TypeScript Agent SDK v0.3.236 or later. [Annotate a result for the auto mode classifier](https://code.claude.com/docs/en/hooks.md#annotate-a-result-for-the-auto-mode-classifier) covers the length cap, the synchronous-only rule, and what not to put in the note.
 
-Return `{}` to allow the operation without changes. SDK callback hooks use the same JSON output format as [Claude Code shell command hooks](https://code.claude.com/docs/en/hooks.md#json-output), which documents every field and event-specific option. For the SDK type definitions, see the [TypeScript](https://code.claude.com/docs/en/agent-sdk/typescript.md#synchookjsonoutput) and [Python](https://code.claude.com/docs/en/agent-sdk/python.md#synchookjsonoutput) SDK references.
+For `PreToolUse`, return `{}` to make no decision, so the normal [permission flow](https://code.claude.com/docs/en/agent-sdk/permissions.md#how-permissions-are-evaluated) applies. SDK callback hooks use the same JSON output format as [Claude Code shell command hooks](https://code.claude.com/docs/en/hooks.md#json-output), which documents every field and event-specific option. For the SDK type definitions, see the [TypeScript](https://code.claude.com/docs/en/agent-sdk/typescript.md#synchookjsonoutput) and [Python](https://code.claude.com/docs/en/agent-sdk/python.md#synchookjsonoutput) SDK references.
 
 > [!NOTE]
 >
@@ -550,7 +550,7 @@ const options = {
 
 ### Track subagent activity
 
-Use `SubagentStop` hooks to monitor when subagents finish their work. See the full input type in the [TypeScript](https://code.claude.com/docs/en/agent-sdk/typescript.md#hookinput) and [Python](https://code.claude.com/docs/en/agent-sdk/python.md#hookinput) SDK references. This example logs a summary each time a subagent completes:
+Use `SubagentStop` hooks to monitor when subagents finish their work. See the full input type in the [TypeScript](https://code.claude.com/docs/en/agent-sdk/typescript.md#hookinput) and [Python](https://code.claude.com/docs/en/agent-sdk/python.md#hookinput) SDK references. This example logs a summary when a subagent completes:
 
 ```python Python theme={null}
 async def subagent_tracker(input_data, tool_use_id, context):
@@ -840,6 +840,7 @@ If your callback needs more time, set a higher `timeout` on its `HookMatcher`. I
 * Check all `PreToolUse` hooks for `permissionDecision: 'deny'` returns
 * Add logging to your hooks to see what `permissionDecisionReason` they're returning
 * Verify matcher patterns aren't too broad: an empty matcher matches all tools
+* If the tool result says a hook `returned updatedInput that failed schema validation` or `returned updatedInput that the tool refused`, fix that hook's `updatedInput`. Include the unchanged `tool_input` fields, as in [Modify tool input](#modify-tool-input), because `updatedInput` replaces the whole input.
 
 ### Modified input not applied
 
